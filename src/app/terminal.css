@@ -1,0 +1,52 @@
+.terminal {
+  font-family: 'Monaco';
+  font-size: 12px;
+  background: rgb(0,43,54);
+  color: rgb(131, 147, 145);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 5px;
+}
+
+.bash {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 5px;
+  max-height: 100%;
+  overflow: auto;
+}
+
+.bashInput {
+  background: none;
+  outline: none;
+  color: inherit;
+  font-family: inherit;
+  border: none;
+  display: inline;
+}
+
+.history {
+}
+
+.prompt {
+  display: inline-block;
+}
+.flower {
+  display: inline;
+  color: rgb(250, 100, 88);
+  margin-right: 0.8em;
+}
+
+.prompt {
+  color: rgb(88, 196, 186);
+}
+
+.response {
+  white-space: pre;
+}

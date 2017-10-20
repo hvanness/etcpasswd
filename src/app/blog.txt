@@ -1,0 +1,71 @@
+//  spin and infinite collapsing.txt
+
+  electron moves with or against magnetic field
+  electron moves with and against magnetic field
+   not surprising
+
+
+  if electron is spread out in space
+
+         _
+      /     \
+    /         \
+_________  _________
+         \/
+
+    then it can have a range of inner "current" loops
+
+        _
+     \/   \
+      \ _ /
+
+        /\/
+        \/
+
+         that have different magnetic fields
+
+        |
+        |/
+
+        |\
+
+              that move the electron wave up and down in a magentic field
+
+                    _
+                 /     \
+               /         \
+     ________________________________
+
+
+   _________________  ________________
+                    \/
+
+
+                 but of course we collapse the wavefunction when we measure its location
+
+                     because we exist in a slice of reality
+
+
+  Imagine if every collapsed state also happens
+
+         and each one propagates
+
+
+
+
+     Then we would only ever have access to the state that came from a collapsed one we experienced.
+
+      In fact we only ever experience a chain of collapsed states.
+
+        But we can choose to not experience a part of the world in order to let it evolve naturally.
+
+          So any collapsed states within that part of the worlds (sic) are inaccessible to us.
+
+            Somewhat ironically, we are only able to exist in a world that is quantum, not classical, half the time
+
+
+
+
+
+
+
