@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import Helmet from 'react-helmet'
 import 'normalize.css'
 import styles from './terminal.css'
-import blog from './blog.txt'
+import fileSystem from './fileSystem.js'
 
 
 
@@ -22,17 +22,29 @@ export default class App extends Component {
 
 class Terminal extends Component {
   state = {
-    bashInput: '',
     history: [],
+    historyOffset: 0,
     responses: [],
     workingDirectory: "~/Projects/personal",
   }
   respond = (input) => {
-    if (input == 'ls') {
-      return "blog.txt"
+    const args = input.split(' ')
+    if (args.length == 0) {
+      return ""
     }
-    if (input == 'cat blog.txt') {
-      return blog
+    if (args[0] == 'ls') {
+      return fileSystem.ls(this.state.workingDirectory, args.slice(1))
+    }
+    if (args[0] == 'cat') {
+      if (args.length != 2) {
+        return "usage: cat [file]"
+      }
+      else  {
+        return fileSystem.readFile(fileSystem.join(this.state.workingDirectory, args[1]))
+      }
+    }
+    if (args[0] == 'history') {
+      return this.state.history.join("\r\n")
     }
     else {
       return "-bash: "+input+": command not found"
@@ -42,10 +54,18 @@ class Terminal extends Component {
     if (e.keyCode == 13) {
       e.preventDefault()
       this.setState({
-        history: this.state.history.concat([this.bashInput.innerHTML]),
-        responses: this.state.responses.concat([this.respond(this.bashInput.innerHTML)]),
-      })
+        responses: this.state.responses.concat([this.respond(this.bashInput.innerText.trim())]),
+        history: this.state.history.concat([this.bashInput.innerText])
+      }, this.updateScroll)
       this.bashInput.innerHTML = ""
+    }
+    if (e.keyCode == 38) {
+      this.bashInput.innerHTML = this.state.history[this.state.history.length - this.state.historyOffset - 1]
+      this.setState({historyOffset: Math.min(this.state.historyOffset + 1, this.state.history.length - 1)})
+    }
+    if (e.keyCode == 40) {
+      this.bashInput.innerHTML = this.state.history[this.state.history.length - this.state.historyOffset - 1]
+      this.setState({historyOffset: Math.max(this.state.historyOffset - 1, 0)})
     }
   }
   bindBashInput = (c) => {
@@ -56,19 +76,29 @@ class Terminal extends Component {
     this.bashInput.focus()
   }
 
+  bindBash = (c) => {
+    this.bash = c
+  }
+
+  updateScroll = () => {
+    this.bash.scrollTo(0, this.bash.scrollHeight)
+  }
+
   render () {
     return (
       <div className={styles.terminal} onClick={this.handleTerminalClick}>
-        <div className={styles.bash}>
-          <div className={styles.history}>
+        <div ref={this.bindBash} className={styles.bash}>
+          <div className={styles.output}>
             -bash: gpg-agent: command not found
           </div>
           {this.state.history.map((buffer, i) => (
-            <div key={i} className={styles.history}>
-              <div className={styles.prompt}>
-                {this.state.workingDirectory} <div className={styles.flower}>⚘</div>
+            <div key={i} className={styles.output}>
+              <div>
+                <div className={styles.prompt}>
+                  {this.state.workingDirectory} <div className={styles.flower}>⚘</div>
+                </div>
+                {buffer}
               </div>
-              {buffer}
               <div className={styles.response}>
                 {this.state.responses[i]}
               </div>
