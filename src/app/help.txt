@@ -1,0 +1,17 @@
+
+  respond = (input) => {
+    const args = input.split(' ')
+    return args.length == 0
+      ? ""
+      : (
+        args[0] == 'ls' ? fileSystem.ls(this.state.workingDirectory, args.slice(1))
+        : args[0] == 'cat' ? (
+          args.length != 2 ? "usage: cat [file]"
+          : fileSystem.readFile(fileSystem.join(this.state.workingDirectory, args[1]))
+        )
+        : args[0] == 'history' ? this.state.history.join("\r\n")
+        : args[0] == 'help' ? help
+        : "-bash: "+input+": command not found"
+      )
+  }
+
