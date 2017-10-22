@@ -1,6 +1,7 @@
 import blog from './blog.txt'
 import normalizePath from 'normalize-path'
 import EtcPasswd from './EtcPasswd'
+import Rope from '../Rope'
 
 class FileSystem {
   fileSystem = {
@@ -8,6 +9,7 @@ class FileSystem {
       "Projects": {
         "personal": {
           "blog.txt": blog,
+          "quantumRope": Rope,
         }
       }
     },

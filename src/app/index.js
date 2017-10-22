@@ -21,11 +21,12 @@ function setEndOfContenteditable(contentEditableElement)
 
 
 const commands = {
-  ls: (workingDirectory, args, fs) => fs.ls(workingDirectory, args),
+  ls: (workingDirectory, args, fs) => fs.ls(workingDirectory, args).join(' '),
   help: () => help,
   cat: (workingDirectory, args, fs) => args.length != 1 ? "usage: cat [file]" : fs.readFile(workingDirectory, args[0]),
   history: (history) => history.join("\r\n"),
   cd: cd,
+  clear: (handleClearTerminal) => window.requestAnimationFrame(handleClearTerminal)
 }
 
 const suggestion = (workingDirectory, input, fs, cmds) => {
@@ -63,7 +64,6 @@ class Terminal extends Component {
   state = {
     history: [],
     historyOffset: 0,
-    responses: [],
     workingDirectory: "~/Projects/personal",
   }
   respond = (input) => {
@@ -76,6 +76,7 @@ class Terminal extends Component {
         : args[0] == 'cat' ? commands.cat(this.state.workingDirectory, args.slice(1), fileSystem)
         : args[0] == 'history' ? commands.history(this.state.history)
         : args[0] == 'help' ? commands.help()
+        : args[0] == 'clear' ? commands.clear(this.handleClearTerminal)
         : "-bash: "+input+": command not found"
       )
     )
@@ -85,12 +86,15 @@ class Terminal extends Component {
     this.setState({workingDirectory: path})
   }
 
+  handleClearTerminal = () => {
+    this.setState({history: new Array(0)})
+  }
+
   handleBashInputKeyDown = (e) => {
     if (e.keyCode == 13) {
       e.preventDefault()
       const response = this.respond(this.bashInput.textContent.trim())
       this.setState({
-        responses: this.state.responses.concat([]),
         history: this.state.history.concat([{
           workingDirectory: this.state.workingDirectory,
           input: this.bashInput.textContent,
@@ -142,9 +146,6 @@ class Terminal extends Component {
     return (
       <div className={styles.terminal} onClick={this.handleTerminalClick}>
         <div ref={this.bindBash} className={styles.bash}>
-          <div className={styles.output}>
-            -bash: gpg-agent: command not found
-          </div>
           {this.state.history.map(({workingDirectory, input, response}, i) => (
             <div key={i} className={styles.output}>
               <div>
